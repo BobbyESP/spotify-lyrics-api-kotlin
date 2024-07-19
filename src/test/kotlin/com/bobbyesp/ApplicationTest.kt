@@ -11,8 +11,12 @@ class ApplicationTest {
     @Test
     fun testRoot() = testApplication {
         client.get("/").apply {
-            assertEquals(HttpStatusCode.OK, status)
-            assertEquals("Hello World!", bodyAsText())
+            assertEquals(HttpStatusCode.BadRequest, status)
+            assertEquals(
+                """
+                {"error":false,"message":"This is the root of the API, no content here. Try other endpoints explained in the documentation."}
+            """.trimIndent(), bodyAsText()
+            )
         }
     }
 }
