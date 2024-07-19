@@ -1,0 +1,5 @@
+runtime: java11
+entrypoint: 'java -jar com.bobbyesp.spotifylyricsapi-all.jar'
+
+env_variables:
+  sp_dc: "yourcookie"
