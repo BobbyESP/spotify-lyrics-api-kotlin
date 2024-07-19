@@ -2,14 +2,12 @@
   "version": 2,
   "builds": [
     {
-      "src": "Dockerfile",
-      "use": "@vercel/docker"
+      "src": "build.sh",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "build/libs/custom-jre/bin" }
     }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/"
-    }
+    { "src": "/(.*)", "dest": "build/libs/custom-jre/bin/com.bobbyesp.spotifylyricsapi-all.jar" }
   ]
 }
