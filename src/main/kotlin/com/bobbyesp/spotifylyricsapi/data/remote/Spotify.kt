@@ -8,7 +8,7 @@ import com.bobbyesp.spotifylyricsapi.domain.model.spotify.lyrics.SpLyricsRespons
 import com.bobbyesp.spotifylyricsapi.ext.toSyncedLyrics
 import io.ktor.client.*
 import io.ktor.client.call.*
-import io.ktor.client.engine.jetty.*
+import io.ktor.client.engine.java.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -29,7 +29,7 @@ class Spotify(private val spDc: String) {
     private val lyricsUrl = "https://spclient.wg.spotify.com/color-lyrics/v2/track/"
     private val cacheFile = File(System.getProperty("java.io.tmpdir"), "spotify_token.json")
 
-    private val client = HttpClient(Jetty) {
+    private val client = HttpClient(Java) {
         install(ContentNegotiation) {
             json()
         }
@@ -51,7 +51,7 @@ class Spotify(private val spDc: String) {
      * @throws Exception if `spDc` is empty or if the fetched token is invalid.
      */
     suspend fun getToken() {
-        if (spDc.isEmpty()) throw Exception("Please set SP_DC as an environmental variable.")
+        if (spDc.isEmpty()) throw Exception("Please set SP_DC as an environmental variable in the system.")
 
         val response: HttpResponse = client.get(tokenUrl) {
             headers {

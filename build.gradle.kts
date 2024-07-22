@@ -1,7 +1,17 @@
 import com.google.cloud.tools.gradle.appengine.appyaml.AppEngineAppYamlExtension
+import java.util.*
 
 val kotlin_version: String by project
 val logback_version: String by project
+val tcnative_version: String by project
+
+val osName = System.getProperty("os.name").lowercase(Locale.getDefault())
+val tcnative_classifier = when {
+    osName.contains("win") -> "windows-x86_64"
+    osName.contains("linux") -> "linux-x86_64"
+    osName.contains("mac") -> "osx-x86_64"
+    else -> null
+}
 
 plugins {
     kotlin("jvm") version "2.0.0"
@@ -49,11 +59,18 @@ dependencies {
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("io.ktor:ktor-server-status-pages")
     implementation("io.ktor:ktor-client-core-jvm")
-    implementation("io.ktor:ktor-client-jetty")
+    implementation("io.ktor:ktor-client-java")
     implementation("io.ktor:ktor-client-content-negotiation")
     implementation("io.ktor:ktor-serialization-kotlinx-json")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("io.ktor:ktor-server-config-yaml")
+
+    if (tcnative_classifier != null) {
+        implementation("io.netty:netty-tcnative-boringssl-static:$tcnative_version:$tcnative_classifier")
+    } else {
+        implementation("io.netty:netty-tcnative-boringssl-static:$tcnative_version")
+    }
+
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
