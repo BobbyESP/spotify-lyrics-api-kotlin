@@ -4,6 +4,7 @@ import java.util.*
 val kotlin_version: String by project
 val logback_version: String by project
 val tcnative_version: String by project
+val ktor_version: String by project
 
 val osName = System.getProperty("os.name").lowercase(Locale.getDefault())
 val tcnative_classifier = when {
@@ -14,9 +15,9 @@ val tcnative_classifier = when {
 }
 
 plugins {
-    kotlin("jvm") version "2.0.0"
-    id("io.ktor.plugin") version "3.0.0-beta-1"
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.0"
+    kotlin("jvm") version "2.0.20"
+    id("io.ktor.plugin") version "3.0.0"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.20"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("com.google.cloud.tools.appengine") version "2.4.2"
 }
@@ -62,15 +63,14 @@ dependencies {
     implementation("io.ktor:ktor-client-java")
     implementation("io.ktor:ktor-client-content-negotiation")
     implementation("io.ktor:ktor-serialization-kotlinx-json")
-    implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation("io.ktor:ktor-server-test-host")
     implementation("io.ktor:ktor-server-config-yaml")
+    implementation("ch.qos.logback:logback-classic:$logback_version")
 
     if (tcnative_classifier != null) {
         implementation("io.netty:netty-tcnative-boringssl-static:$tcnative_version:$tcnative_classifier")
     } else {
         implementation("io.netty:netty-tcnative-boringssl-static:$tcnative_version")
     }
-
-    testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
